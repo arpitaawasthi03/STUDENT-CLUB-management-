@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: header-assets('My Enrolled Clubs')}">
+    <title>My Enrolled Clubs</title>
+</head>
+<body>
+
+<nav th:replace="~{fragments :: navbar('myClubs')}"></nav>
+
+<main class="main-wrapper">
+    <div class="page-header">
+        <div>
+            <h1>My Club Memberships</h1>
+            <p>
+                Student: <strong th:text="${student.studentName}">Student Name</strong> &bull;
+                <span th:text="${student.email}">student@email.com</span> &bull;
+                <span th:text="${student.course}">Course</span>
+            </p>
+        </div>
+        <div style="display: flex; gap: 0.5rem;">
+            <a th:href="@{/club/list}" class="btn btn-primary btn-sm">+ Join More Clubs</a>
+            <a th:href="@{/student/dashboard}" class="btn btn-secondary btn-sm">Dashboard</a>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments :: alerts}"></div>
+
+    <div class="card" style="padding: 0; overflow: hidden;">
+        <div style="padding: 0.75rem 1rem; background-color: #eef5f0; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between;">
+            <strong style="font-size: 0.9rem; color: #212529;">Active Memberships</strong>
+            <span class="badge badge-dark" th:text="${myClubs != null ? #sets.size(myClubs) : 0} + ' Club(s)'">0 Clubs</span>
+        </div>
+
+        <div class="data-table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="width: 50px;">ID</th>
+                        <th>Club Name</th>
+                        <th>Category</th>
+                        <th>Faculty Coordinator</th>
+                        <th style="text-align: center; width: 100px;">Capacity</th>
+                        <th>Description</th>
+                        <th style="text-align: center; width: 100px;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:if="${myClubs == null || #sets.isEmpty(myClubs)}">
+                        <td colspan="7" style="text-align: center; padding: 2rem; color: var(--text-muted);">
+                            You are not currently enrolled in any clubs. <a th:href="@{/club/list}">Browse clubs</a> to join.
+                        </td>
+                    </tr>
+                    <tr th:each="cl : ${myClubs}">
+                        <td th:text="${cl.clubId}">1</td>
+                        <td>
+                            <strong th:text="${cl.clubName}" style="color: #212529;">Robotics Club</strong>
+                        </td>
+                        <td>
+                            <span class="badge badge-dark" th:text="${cl.category}">Technical</span>
+                        </td>
+                        <td th:text="${cl.facultyCoordinator}">Dr. Smith</td>
+                        <td style="text-align: center;">
+                            <span class="badge badge-dark" th:text="${cl.memberCount} + ' / ' + ${cl.maximumMembers}">15 / 30</span>
+                        </td>
+                        <td>
+                            <span th:if="${cl.description != null && !#strings.isEmpty(cl.description)}"
+                                  th:text="${cl.description}"
+                                  style="color: var(--text-muted); font-size: 0.85rem;">
+                                Description
+                            </span>
+                            <span th:if="${cl.description == null || #strings.isEmpty(cl.description)}" style="color: var(--text-muted); font-size: 0.8rem;">-</span>
+                        </td>
+                        <td style="text-align: center;">
+                            <a th:href="@{/membership/leave(clubId=${cl.clubId})}" class="btn btn-danger btn-sm"
+                               style="padding: 0.15rem 0.45rem;"
+                               onclick="return confirm('Are you sure you want to leave this club?');">
+                                Leave
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+
+</body>
+</html>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee
+                             https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+         version="6.0">
+
+    <display-name>Campus Club Membership Management System</display-name>
+
+    <!-- ============================================================== -->
+    <!-- FILTER 1: RequestLoggingFilter (Executed First)               -->
+    <!-- Records Request URI, HTTP Method, and Request Processing Time  -->
+    <!-- ============================================================== -->
+    <filter>
+        <filter-name>RequestLoggingFilter</filter-name>
+        <filter-class>com.campus.filter.RequestLoggingFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>RequestLoggingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- ============================================================== -->
+    <!-- FILTER 2: AuthenticationFilter (Executed Second)              -->
+    <!-- Protects dashboard, membership workflow, and management URLs   -->
+    <!-- Redirects unauthenticated / expired sessions to login          -->
+    <!-- ============================================================== -->
+    <filter>
+        <filter-name>AuthenticationFilter</filter-name>
+        <filter-class>com.campus.filter.AuthenticationFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthenticationFilter</filter-name>
+        <url-pattern>/student/dashboard</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AuthenticationFilter</filter-name>
+        <url-pattern>/membership/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AuthenticationFilter</filter-name>
+        <url-pattern>/club/add</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AuthenticationFilter</filter-name>
+        <url-pattern>/club/edit</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AuthenticationFilter</filter-name>
+        <url-pattern>/club/delete</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AuthenticationFilter</filter-name>
+        <url-pattern>/student/edit</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AuthenticationFilter</filter-name>
+        <url-pattern>/student/delete</url-pattern>
+    </filter-mapping>
+
+    <!-- ============================================================== -->
+    <!-- SERVLETS DECLARATION                                          -->
+    <!-- ============================================================== -->
+    <servlet>
+        <servlet-name>AuthServlet</servlet-name>
+        <servlet-class>com.campus.controller.AuthServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AuthServlet</servlet-name>
+        <url-pattern>/auth/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>StudentServlet</servlet-name>
+        <servlet-class>com.campus.controller.StudentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>StudentServlet</servlet-name>
+        <url-pattern>/student/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ClubServlet</servlet-name>
+        <servlet-class>com.campus.controller.ClubServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ClubServlet</servlet-name>
+        <url-pattern>/club/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>MembershipServlet</servlet-name>
+        <servlet-class>com.campus.controller.MembershipServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MembershipServlet</servlet-name>
+        <url-pattern>/membership/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Welcome File List -->
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+
+    <!-- Session Timeout: 30 minutes -->
+    <session-config>
+        <session-timeout>30</session-timeout>
+        <tracking-mode>COOKIE</tracking-mode>
+    </session-config>
+
+</web-app>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: header-assets('Student Login')}">
+    <title>Student Login</title>
+</head>
+<body>
+
+<nav th:replace="~{fragments :: navbar('login')}"></nav>
+
+<main class="main-wrapper" style="max-width: 420px; margin-top: 3rem;">
+    <div class="card">
+        <h2 style="font-size: 1.25rem; margin-bottom: 0.35rem; color: #212529;">Student Login</h2>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.25rem;">Enter your campus email and password to log in.</p>
+
+        <div th:replace="~{fragments :: alerts}"></div>
+
+        <form th:action="@{/auth/login}" method="post">
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" class="form-control"
+                       th:value="${email}" placeholder="student@campus.edu" required autofocus />
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" class="form-control"
+                       placeholder="Enter password" required />
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.55rem; margin-top: 0.5rem;">
+                Sign In
+            </button>
+        </form>
+
+        <div style="margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.85rem; text-align: center;">
+            <span style="color: var(--text-muted);">Don't have an account?</span>
+            <a th:href="@{/student/register}" style="color: var(--primary); font-weight: 600; text-decoration: none; margin-left: 0.35rem;">Register here</a>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+
+</body>
+</html>

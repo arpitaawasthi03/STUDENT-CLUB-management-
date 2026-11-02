@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: header-assets('Review Club Selection')}">
+    <title>Review Club Selection</title>
+</head>
+<body>
+
+<nav th:replace="~{fragments :: navbar('clubs')}"></nav>
+
+<main class="main-wrapper" style="max-width: 800px;">
+    <div class="page-header">
+        <div>
+            <h1>Review Club Selection</h1>
+            <p>Please review your selected clubs before confirming your membership.</p>
+        </div>
+        <a th:href="@{/membership/cancel}" class="btn btn-secondary btn-sm">Cancel</a>
+    </div>
+
+    <div th:replace="~{fragments :: alerts}"></div>
+
+    <div th:if="${hasDuplicate}" class="alert alert-danger">
+        Duplicate Selection: You are already a member of one or more selected clubs.
+    </div>
+
+    <div th:if="${hasCapacityExceeded}" class="alert alert-danger">
+        Capacity Limit: One or more selected clubs have reached their maximum member capacity.
+    </div>
+
+    <div class="card" style="padding: 0; overflow: hidden; margin-bottom: 1.25rem;">
+        <div style="padding: 0.75rem 1rem; background-color: #eef5f0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <strong>Student:</strong>
+                <span th:text="${student.studentName}">Student Name</span>
+                (<span th:text="${student.email}">email</span>)
+            </div>
+            <span class="badge badge-dark" th:text="${#lists.size(selectedClubs)} + ' Selected'">2 Selected</span>
+        </div>
+
+        <div class="data-table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Club Name</th>
+                        <th>Category</th>
+                        <th>Coordinator</th>
+                        <th style="text-align: center; width: 100px;">Capacity</th>
+                        <th style="text-align: right; width: 140px;">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="c : ${selectedClubs}">
+                        <td>
+                            <strong th:text="${c.clubName}" style="color: #212529;">Club Name</strong>
+                            <div th:if="${c.description != null}" th:text="${c.description}" style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.15rem;"></div>
+                        </td>
+                        <td>
+                            <span class="badge badge-dark" th:text="${c.category}">Category</span>
+                        </td>
+                        <td th:text="${c.facultyCoordinator}">Coordinator</td>
+                        <td style="text-align: center;">
+                            <span th:class="${c.isCapacityReached()} ? 'badge badge-danger' : 'badge badge-dark'"
+                                  th:text="${c.memberCount} + ' / ' + ${c.maximumMembers}">12 / 30</span>
+                        </td>
+                        <td style="text-align: right;">
+                            <th:block th:with="already=${alreadyJoinedIds != null && alreadyJoinedIds.contains(c.clubId)}, full=${c.isCapacityReached()}">
+                                <span th:if="${already}" class="badge badge-danger">Already Joined</span>
+                                <span th:if="${!already && full}" class="badge badge-danger">Full</span>
+                                <span th:if="${!already && !full}" class="badge badge-success">Eligible</span>
+                            </th:block>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Confirmation form -->
+    <form th:action="@{/membership/confirm}" method="post">
+        <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+            <a th:href="@{/membership/cancel}" class="btn btn-secondary">Cancel &amp; Go Back</a>
+            <button type="submit" class="btn btn-success" th:disabled="${hasDuplicate || hasCapacityExceeded}">
+                Confirm Membership
+            </button>
+        </div>
+    </form>
+</main>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+
+</body>
+</html>

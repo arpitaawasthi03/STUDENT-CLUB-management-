@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: header-assets(${isEdit} ? 'Edit Club' : 'Create Club')}">
+    <title>Club Form</title>
+</head>
+<body>
+
+<nav th:replace="~{fragments :: navbar('clubs')}"></nav>
+
+<main class="main-wrapper" style="max-width: 580px;">
+    <div class="card">
+        <div class="page-header" style="margin-bottom: 1rem; padding-bottom: 0.5rem;">
+            <div>
+                <h1 th:text="${isEdit} ? 'Edit Club Details' : 'Create New Club'" style="font-size: 1.25rem;">Create Club</h1>
+                <p th:text="${isEdit} ? 'Modify club properties and member limits' : 'Enter details to register a new campus club'"></p>
+            </div>
+            <a th:href="@{/club/list}" class="btn btn-secondary btn-sm">Back to List</a>
+        </div>
+
+        <div th:replace="~{fragments :: alerts}"></div>
+
+        <form th:object="${club}" th:action="${formAction}" method="post">
+            <input th:if="${isEdit}" type="hidden" name="clubId" th:field="*{clubId}" th:value="*{clubId}" />
+
+            <div class="form-group">
+                <label for="clubName">Club Name <span style="color: var(--danger);">*</span></label>
+                <input type="text" id="clubName" name="clubName" class="form-control"
+                       th:field="*{clubName}" th:value="*{clubName}"
+                       placeholder="e.g. Robotics Club" required />
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                <div class="form-group">
+                    <label for="category">Category <span style="color: var(--danger);">*</span></label>
+                    <select id="category" name="category" class="form-control" required>
+                        <option value="">Select Category</option>
+                        <option value="Technical" th:selected="${club.category == 'Technical'}">Technical</option>
+                        <option value="Cultural" th:selected="${club.category == 'Cultural'}">Cultural</option>
+                        <option value="Sports" th:selected="${club.category == 'Sports'}">Sports</option>
+                        <option value="Literary" th:selected="${club.category == 'Literary'}">Literary</option>
+                        <option value="Social" th:selected="${club.category == 'Social'}">Social</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="maximumMembers">Maximum Capacity <span style="color: var(--danger);">*</span></label>
+                    <input type="number" id="maximumMembers" name="maximumMembers" class="form-control"
+                           min="1" max="500"
+                           th:field="*{maximumMembers}" th:value="*{maximumMembers}"
+                           placeholder="e.g. 10" readonly required />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="facultyCoordinator">Faculty Coordinator <span style="color: var(--danger);">*</span></label>
+                <input type="text" id="facultyCoordinator" name="facultyCoordinator" class="form-control"
+                       th:field="*{facultyCoordinator}" th:value="*{facultyCoordinator}"
+                       placeholder="e.g. Dr. Jane Smith" required />
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" class="form-control" rows="3"
+                          th:field="*{description}" th:text="*{description}"
+                          placeholder="Brief description of the club..."></textarea>
+            </div>
+
+            <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                <button type="submit" class="btn btn-primary" style="flex: 1;">
+                    <span th:text="${isEdit} ? 'Update Club' : 'Save Club'">Save</span>
+                </button>
+                <a th:href="@{/club/list}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</main>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+
+</body>
+</html>

@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="header-assets(pageTitle)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${pageTitle} + ' | Campus Club System'">Campus Club System</title>
+    <style>
+        :root {
+            --primary: #2d6a4f;
+            --primary-hover: #1b4332;
+            --secondary: #495057;
+            --secondary-hover: #343a40;
+            --success: #2d6a4f;
+            --danger: #c92a2a;
+            --warning: #d9480f;
+            --text-main: #1f2923;
+            --text-muted: #526056;
+            --bg-body: #f4f7f5;
+            --bg-card: #ffffff;
+            --border: #d8e2dc;
+            --border-dark: #b7c4bc;
+            --radius: 4px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        /* Standard Top Navigation Bar */
+        .navbar {
+            background-color: #1b4332;
+            color: #ffffff;
+            border-bottom: 1px solid #143628;
+        }
+
+        .nav-container {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 0.65rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-brand {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-decoration: none;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #d8f3dc;
+            text-decoration: none;
+            font-size: 0.9rem;
+            padding: 0.4rem 0.75rem;
+            border-radius: var(--radius);
+        }
+
+        .nav-links a:hover {
+            color: #ffffff;
+            background-color: #2d6a4f;
+        }
+
+        .nav-links a.active {
+            color: #ffffff;
+            font-weight: 600;
+            background-color: #143628;
+        }
+
+        .user-tag {
+            font-size: 0.85rem;
+            color: #e8f5e9;
+            background-color: #245841;
+            padding: 0.3rem 0.65rem;
+            border-radius: var(--radius);
+            border: 1px solid #2d6a4f;
+        }
+
+        /* Main Content Container */
+        .main-wrapper {
+            max-width: 1140px;
+            width: 100%;
+            margin: 1.5rem auto;
+            padding: 0 1rem;
+            flex: 1;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .page-header h1 {
+            font-size: 1.4rem;
+            color: #212529;
+            font-weight: 600;
+        }
+
+        .page-header p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 0.2rem;
+        }
+
+        /* Classic Card Box */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+
+        /* Standard Buttons */
+        .btn {
+            display: inline-block;
+            font-weight: 500;
+            text-align: center;
+            vertical-align: middle;
+            cursor: pointer;
+            border: 1px solid transparent;
+            padding: 0.45rem 0.9rem;
+            font-size: 0.875rem;
+            border-radius: var(--radius);
+            text-decoration: none;
+            line-height: 1.4;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            color: #ffffff;
+        }
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            border-color: var(--primary-hover);
+        }
+
+        .btn-secondary {
+            background-color: #e9ecef;
+            border-color: var(--border-dark);
+            color: #333333;
+        }
+        .btn-secondary:hover {
+            background-color: #dde0e3;
+        }
+
+        .btn-success {
+            background-color: var(--success);
+            border-color: var(--success);
+            color: #ffffff;
+        }
+        .btn-success:hover {
+            background-color: var(--primary-hover);
+            border-color: var(--primary-hover);
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+            border-color: var(--danger);
+            color: #ffffff;
+        }
+        .btn-danger:hover {
+            background-color: #a71d2a;
+        }
+
+        .btn-sm {
+            padding: 0.25rem 0.55rem;
+            font-size: 0.8rem;
+        }
+
+        /* Standard Alerts */
+        .alert {
+            padding: 0.75rem 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid transparent;
+            border-radius: var(--radius);
+            font-size: 0.9rem;
+        }
+
+        .alert-danger {
+            background-color: #fdf2f2;
+            border-color: #f8d7da;
+            color: #9b1c1c;
+        }
+
+        .alert-success {
+            background-color: #d8f3dc;
+            border-color: #b7e4c7;
+            color: #143628;
+        }
+
+        .alert-info {
+            background-color: #eaf4ed;
+            border-color: #cde4d3;
+            color: #1b4332;
+        }
+
+        /* Classic Data Table */
+        .data-table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+            background-color: #ffffff;
+            border: 1px solid var(--border);
+        }
+
+        .data-table th {
+            background-color: #eef5f0;
+            color: #1f2923;
+            font-weight: 600;
+            padding: 0.65rem 0.75rem;
+            border: 1px solid var(--border);
+            text-align: left;
+        }
+
+        .data-table td {
+            padding: 0.65rem 0.75rem;
+            border: 1px solid var(--border);
+            vertical-align: middle;
+        }
+
+        .data-table tbody tr:nth-of-type(even) {
+            background-color: #fbfdfb;
+        }
+
+        .data-table tbody tr:hover {
+            background-color: #edf5ef;
+        }
+
+        /* Simple Badges */
+        .badge {
+            display: inline-block;
+            padding: 0.2em 0.55em;
+            font-size: 75%;
+            font-weight: 600;
+            line-height: 1;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: var(--radius);
+            border: 1px solid transparent;
+        }
+
+        .badge-dark, .badge-indigo, .badge-cyan {
+            background-color: #e9ecef;
+            color: #495057;
+            border-color: #ced4da;
+        }
+
+        .badge-info {
+            background-color: #eaf4ed;
+            color: #1b4332;
+            border-color: #cde4d3;
+        }
+
+        .badge-success, .badge-green {
+            background-color: #d8f3dc;
+            color: #1b4332;
+            border-color: #b7e4c7;
+        }
+
+        .badge-warning {
+            background-color: #fff3e0;
+            color: #e65100;
+            border-color: #ffe0b2;
+        }
+
+        .badge-danger, .badge-red {
+            background-color: #ffebee;
+            color: #c62828;
+            border-color: #ffcdd2;
+        }
+
+        /* Form Inputs */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.35rem;
+            font-weight: 500;
+            font-size: 0.875rem;
+            color: #333333;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            color: #495057;
+            background-color: #ffffff;
+            border: 1px solid var(--border-dark);
+            border-radius: var(--radius);
+            font-family: inherit;
+        }
+
+        .form-control:focus {
+            outline: 0;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(45, 106, 79, 0.2);
+        }
+
+        /* Simple Footer */
+        .footer {
+            border-top: 1px solid var(--border);
+            background-color: #ffffff;
+            padding: 1.25rem 0;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation Header Fragment -->
+<nav th:fragment="navbar(activeTab)" class="navbar">
+    <div class="nav-container">
+        <a class="nav-brand" th:href="@{/student/dashboard}">Campus Club System</a>
+
+        <ul class="nav-links">
+            <li th:if="${loggedIn}">
+                <a th:href="@{/student/dashboard}" th:classappend="${activeTab == 'dashboard'} ? 'active' : ''">Dashboard</a>
+            </li>
+            <li>
+                <a th:href="@{/club/list}" th:classappend="${activeTab == 'clubs'} ? 'active' : ''">Clubs</a>
+            </li>
+            <li>
+                <a th:href="@{/student/list}" th:classappend="${activeTab == 'students'} ? 'active' : ''">Students</a>
+            </li>
+            <li th:if="${loggedIn}">
+                <a th:href="@{/membership/my-clubs}" th:classappend="${activeTab == 'myClubs'} ? 'active' : ''">My Clubs</a>
+            </li>
+        </ul>
+
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <div th:if="${loggedIn}" class="user-tag">
+                User: <strong th:text="${sessionStudentName}">Student</strong>
+            </div>
+
+            <div th:if="${loggedIn}">
+                <a th:href="@{/auth/logout}" class="btn btn-secondary btn-sm">Logout</a>
+            </div>
+
+            <div th:unless="${loggedIn}" style="display: flex; gap: 0.4rem;">
+                <a th:href="@{/auth/login}" class="btn btn-secondary btn-sm">Login</a>
+                <a th:href="@{/student/register}" class="btn btn-primary btn-sm">Register</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Alert Fragment -->
+<div th:fragment="alerts">
+    <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}">An error occurred</div>
+    <div th:if="${paramError}" class="alert alert-danger" th:text="${paramError}">An error occurred</div>
+    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}">Action succeeded!</div>
+    <div th:if="${paramSuccess}" class="alert alert-success" th:text="${paramSuccess}">Action succeeded!</div>
+    <div th:if="${infoMessage}" class="alert alert-info" th:text="${infoMessage}">Information notice</div>
+</div>
+
+<!-- Footer Fragment -->
+<footer th:fragment="footer" class="footer">
+    <div class="nav-container" style="justify-content: center; flex-direction: column; gap: 0.2rem;">
+        <p>&copy; 2026 Campus Club Membership Management System</p>
+        <p style="color: #8c959f; font-size: 0.75rem;">Java Servlets &bull; Hibernate Many-to-Many &bull; Servlet Filters &bull; MySQL</p>
+    </div>
+</footer>
+
+</body>
+</html>

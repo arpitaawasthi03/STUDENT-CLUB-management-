@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: header-assets(${isEdit} ? 'Edit Student Details' : 'Student Registration')}">
+    <title>Student Registration</title>
+</head>
+<body>
+
+<nav th:replace="~{fragments :: navbar('students')}"></nav>
+
+<main class="main-wrapper" style="max-width: 560px;">
+    <div class="card">
+        <div class="page-header" style="margin-bottom: 1rem; padding-bottom: 0.5rem;">
+            <div>
+                <h1 th:text="${isEdit} ? 'Edit Student Details' : 'Student Registration'" style="font-size: 1.25rem;">Student Registration</h1>
+                <p th:text="${isEdit} ? 'Update student record information' : 'Fill in the details to register as a student'"></p>
+            </div>
+            <a th:href="@{/student/list}" class="btn btn-secondary btn-sm">Back to List</a>
+        </div>
+
+        <div th:replace="~{fragments :: alerts}"></div>
+
+        <form th:object="${student}" th:action="${formAction}" method="post">
+            <input th:if="${isEdit}" type="hidden" name="studentId" th:field="*{studentId}" th:value="*{studentId}" />
+
+            <div class="form-group">
+                <label for="studentName">Full Name <span style="color: var(--danger);">*</span></label>
+                <input type="text" id="studentName" name="studentName" class="form-control"
+                       th:field="*{studentName}" th:value="*{studentName}"
+                       placeholder="e.g. John Doe" required />
+            </div>
+
+            <div class="form-group">
+                <label for="email">Campus Email Address <span style="color: var(--danger);">*</span></label>
+                <input type="email" id="email" name="email" class="form-control"
+                       th:field="*{email}" th:value="*{email}"
+                       placeholder="student@campus.edu" required />
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password <span style="color: var(--danger);">*</span></label>
+                <input type="password" id="password" name="password" class="form-control"
+                       th:field="*{password}" th:value="*{password}"
+                       placeholder="Enter password" required />
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                <div class="form-group">
+                    <label for="course">Course / Degree <span style="color: var(--danger);">*</span></label>
+                    <input type="text" id="course" name="course" class="form-control"
+                           th:field="*{course}" th:value="*{course}"
+                           placeholder="e.g. B.Tech Computer Science" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="yearOfStudy">Year of Study <span style="color: var(--danger);">*</span></label>
+                    <select id="yearOfStudy" name="yearOfStudy" class="form-control" required>
+                        <option value="">Select Year</option>
+                        <option value="1" th:selected="${student.yearOfStudy == 1}">Year 1</option>
+                        <option value="2" th:selected="${student.yearOfStudy == 2}">Year 2</option>
+                        <option value="3" th:selected="${student.yearOfStudy == 3}">Year 3</option>
+                        <option value="4" th:selected="${student.yearOfStudy == 4}">Year 4</option>
+                        <option value="5" th:selected="${student.yearOfStudy == 5}">Year 5</option>
+                    </select>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                <button type="submit" class="btn btn-primary" style="flex: 1;">
+                    <span th:text="${isEdit} ? 'Save Changes' : 'Submit Registration'">Register</span>
+                </button>
+                <a th:href="@{/student/list}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</main>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+
+</body>
+</html>
